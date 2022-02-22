@@ -28,5 +28,3 @@ else:
 #Start "startburger.py" from command line.
 download = Boorger(url, directory, reverse)
 download.loader(pages)
-#boorgerstart(url, directory, pages, reverse)
-
