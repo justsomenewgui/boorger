@@ -18,25 +18,33 @@
 """
 
 import argparse
+
+# local import:
 from tools.startburger import Boorger
 
+# https://docs.python.org/3/library/argparse.html
 parser = argparse.ArgumentParser(
     usage="""./boorger.py url [optional arguments]""",
     description="""Downloads images and videos from Gelbooru, Danbooru,
     Konachan and iibooru.""")
-parser.add_argument("url", nargs='?', help="""Valid url. For example:
-'https://gelbooru.com/index.php?page=post&s=list&tags=suigintou'""")
-parser.add_argument("-d", "--directory", type=str,
-                    default=None, help="""Directory to store
-downloaded images. Must contain full path.
-For example: '/home/user/Pictures/' If not given, images vill downloaded
-to /booru_images/ in current working directory.""")
-parser.add_argument("-p", "--pages", type=int, default=1, help="""
-Number of pages you want to download.""")
-parser.add_argument("-r", "--reverse", action="store_true", help="""
-If selected, pages will be loaded in descending order.""")
-parser.add_argument("-l", "--license", action="store_true", help="""
-Print the license of boorger.""")
+parser.add_argument(
+    "url", nargs='?', help="""Valid url. For example:
+    'https://gelbooru.com/index.php?page=post&s=list&tags=suigintou'""")
+parser.add_argument(
+    "-d", "--directory", type=str, default=None,
+    help="""Directory to store downloaded images. Must contain full path.
+    For example: '/home/user/Pictures/' If not given, images vill downloaded
+    to /booru_images/ in current working directory.""")
+parser.add_argument(
+    "-p", "--pages", type=int, default=1,
+    help="""Number of pages you want to download.""")
+parser.add_argument(
+    "-r", "--reverse", action="store_true",
+    help="""If selected, pages will be loaded in descending order.""")
+parser.add_argument(
+    "-l", "--license", action="store_true",
+    help="""Print the license of boorger.""")
+
 args = parser.parse_args()
 url = args.url
 directory = args.directory
@@ -50,6 +58,6 @@ if args.license:
         license = f.read()
         print(license)
 else:
-    #Start "startburger.py" from command line.
+    # Start "startburger.py" from command line.
     download = Boorger(url, directory, reverse)
-    download.loader(pages)
+    download.main(pages)
