@@ -1,6 +1,6 @@
-import urllib.request
-import os.path
 import os
+import urllib.request
+
 
 def loader(link, agent, cookie):
     """For more info visit:
@@ -12,6 +12,7 @@ def loader(link, agent, cookie):
     with opener.open(link) as remotefile:
         remotedata = remotefile.read().decode('utf-8')
         return remotedata
+
 
 def imgloader(link, directory, agent, cookie):
     """Just saves files from given link."""
@@ -28,4 +29,3 @@ def imgloader(link, directory, agent, cookie):
             image = remoteimg.read()
             with open(image_name, 'wb') as myimage:
                 myimage.write(image)
-

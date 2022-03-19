@@ -1,8 +1,10 @@
 import re
 import sys
 
+
 class PageBoorger:
     """Gives urls for next pages."""
+    
     def __init__(self, url, reverse=False):
         self.url = url
         self.reverse = reverse
