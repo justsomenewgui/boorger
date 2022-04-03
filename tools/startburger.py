@@ -130,4 +130,4 @@ class Boorger:
         data = brloader.loader(link, agent, cookie)
         myparser = MyHTMLParser()
         links = myparser.imager(data)
-        self.result = self.result.union(links)
+        self.result.update(links)
