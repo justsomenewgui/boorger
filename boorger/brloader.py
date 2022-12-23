@@ -14,7 +14,7 @@ def loader(link, agent, cookie):
         return remotedata
 
 
-def imgloader(link, directory, agent, cookie):
+def imgloader(link, agent, cookie, directory):
     """Just saves files from given link."""
     filenames = os.listdir(directory)
     image_name = os.path.basename(link)

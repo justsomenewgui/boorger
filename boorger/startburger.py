@@ -65,28 +65,8 @@ class Boorger:
             if len(links) == 0:
                 print('parser.starter give no links')
                 sys.exit()
-            # Downloading html pages with threading.Thread
-            # and pars links to images from them with html.parser.HTMLParser
-            # https://docs.python.org/3/library/threading.html
-            start = 0  # Breaking a list of links into pieces,
-            end = 20   # to avoid too long list.
-            while True:
-                try:
-                    threads = []
-                    for x in range(start, end):
-                        thread = Thread(
-                            target=Boorger.thr_loader,
-                            args=(self, links[x], self.agent, self.cookie))
-                        thread.start()
-                        threads.append(thread)
-                    for thread in threads:
-                        thread.join()
-                    start = end
-                    end = end + 20
-                except IndexError:
-                    for thread in threads:
-                        thread.join()
-                    break
+            # Downloading html pages:
+            Boorger.loader(self, links, target=Boorger.thr_loader)
             links = list(self.result)
         elif 'chan.sankakucomplex.com' in self.url:
             # sankaku asking to slow down. So we downloading it slow.
@@ -103,43 +83,54 @@ class Boorger:
         if 'chan.sankakucomplex.com' in self.url:
             # sankaku asking to slow down. So we downloading it slow.
             for link in links:
-                brloader.imgloader(link, self.directory,
-                                   self.agent, self.cookie)
+                brloader.imgloader(link, self.agent, self.cookie,
+                                   self.directory)
         else:
-            start = 0
-            end = 20
-            while True:
-                try:
-                    threads = []
-                    for x in range(start, end):
-                        thread = Thread(
-                            target=brloader.imgloader,
-                            args=(links[x], self.directory, self.agent,
-                                  self.cookie))
-                        thread.start()
-                        threads.append(thread)
-                    for thread in threads:
-                        thread.join()
-                    start = end
-                    end = end + 20
-                except IndexError:
-                    for thread in threads:
-                        thread.join()
-                    break
+            # Downloading files:
+            Boorger.loader(self, links, target=Boorger.img_loader)
                 
-        self.result.clear()  # reset old results
         nextpage = PageBoorger(self.url, self.reverse)
         while pages > 1:
             print('Browse next page')
             self.url = nextpage.nextUrl()
             Boorger.main(self)
             pages = pages - 1
+
+    def loader(self, links, target):
+        """Downloading html pages or files with threading.Thread and
         
-    def thr_loader(self, link, agent, cookie):
+        pars links to images from them with html.parser.HTMLParser
+        https://docs.python.org/3/library/threading.html
+        """
+        start = 0  # Breaking a list of links into pieces,
+        end = 20   # to avoid too long list.
+        while True:
+            try:
+                threads = []
+                for x in range(start, end):
+                    thread = Thread(
+                        target=target,
+                        args=(self, links[x]))
+                    thread.start()
+                    threads.append(thread)
+                for thread in threads:
+                    thread.join()
+                start = end
+                end = end + 20
+            except IndexError:
+                for thread in threads:
+                    thread.join()
+                break
+        
+    def thr_loader(self, link):
         """Function for loading links with threading.Thread
         https://docs.python.org/3/library/threading.html
         """
-        data = brloader.loader(link, agent, cookie)
+        data = brloader.loader(link, self.agent, self.cookie)
         myparser = MyHTMLParser()
         links = myparser.imager(data)
         self.result.update(links)
+
+    def img_loader(self, link):
+        brloader.imgloader(link, self.agent, self.cookie, self.directory)
+        self.result.clear()  # reset old results

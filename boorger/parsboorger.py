@@ -11,11 +11,13 @@ class MyHTMLParser(HTMLParser):
         self.result = set()  # Accumulating links from parser
         self.img = set()     # Accumulating links to images
         
-    def starter(self, data: str) -> str:
+    def starter(self, data):
+        """Returning set of links from parser."""
         MyHTMLParser.feed(self, data)
         return self.result
     
-    def imager(self, data: str) -> str:
+    def imager(self, data):
+        """Returning set of links to images from parser."""
         MyHTMLParser.feed(self, data)
         return self.img
         
