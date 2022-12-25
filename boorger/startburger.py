@@ -88,6 +88,8 @@ class Boorger:
         else:
             # Downloading files:
             Boorger.loader(self, links, target=Boorger.img_loader)
+
+        self.result.clear()  # reset olg results
                 
         nextpage = PageBoorger(self.url, self.reverse)
         while pages > 1:
@@ -108,9 +110,7 @@ class Boorger:
             try:
                 threads = []
                 for x in range(start, end):
-                    thread = Thread(
-                        target=target,
-                        args=(self, links[x]))
+                    thread = Thread(target=target, args=(self, links[x]))
                     thread.start()
                     threads.append(thread)
                 for thread in threads:
@@ -133,4 +133,3 @@ class Boorger:
 
     def img_loader(self, link):
         brloader.imgloader(link, self.agent, self.cookie, self.directory)
-        self.result.clear()  # reset old results
