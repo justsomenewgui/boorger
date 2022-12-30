@@ -66,13 +66,13 @@ class Boorger:
                 print('parser.starter give no links')
                 sys.exit()
             # Downloading html pages:
-            Boorger.loader(self, links, target=Boorger.thr_loader)
+            self.loader(links, target=Boorger.thr_loader)
             links = list(self.result)
         elif 'chan.sankakucomplex.com' in self.url:
             # sankaku asking to slow down. So we downloading it slow.
             links = list(parser.starter(remotedata))
             for link in links:
-                Boorger.thr_loader(self, link, self.agent, self.cookie)
+                self.thr_loader(link)
             links = list(self.result)
         else:
             # Here go links for sites, that dont need first step.
@@ -87,7 +87,7 @@ class Boorger:
                                    self.directory)
         else:
             # Downloading files:
-            Boorger.loader(self, links, target=Boorger.img_loader)
+            self.loader(links, target=Boorger.img_loader)
 
         self.result.clear()  # reset olg results
                 
@@ -95,7 +95,7 @@ class Boorger:
         while pages > 1:
             print('Browse next page')
             self.url = nextpage.nextUrl()
-            Boorger.main(self)
+            self.main()
             pages = pages - 1
 
     def loader(self, links, target):

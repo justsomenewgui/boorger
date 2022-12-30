@@ -13,12 +13,12 @@ class MyHTMLParser(HTMLParser):
         
     def starter(self, data):
         """Returning set of links from parser."""
-        MyHTMLParser.feed(self, data)
+        self.feed(data)
         return self.result
     
     def imager(self, data):
         """Returning set of links to images from parser."""
-        MyHTMLParser.feed(self, data)
+        self.feed(data)
         return self.img
         
     def handle_starttag(self, tag, attrs):
